@@ -16,7 +16,7 @@ Django tabanlı, bir kullanıcının aynı anda sadece tek cihazdan giriş yapab
 - 📡 Django Signals  
 - 🔐 Django Sessions  
 - ⚙️ Django Admin Panel  
-- 🗃️ SQLite (Geliştirme için)
+- 🗃️ SQLite
 
 ## ⚙️ Kurulum
 
