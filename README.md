@@ -37,8 +37,8 @@ Django tabanlı, bir kullanıcının aynı anda sadece tek cihazdan giriş yapab
 📝 Kullanım
 
 - 👤 Sisteme bir kullanıcı hesabıyla giriş yapın.  
-- 📲 Aynı kullanıcı ile başka bir cihazdan giriş yapmaya çalıştığınızda, önceki oturum otomatik kapatılır.  
-📊 Admin panelde tüm giriş loglarını tarih, IP ve kullanıcıya göre filtreleyebilirsiniz.
+- 📲 Aynı kullanıcı ile başka bir cihazdan giriş yapmaya çalıştığınızda, önceki oturum otomatik kapatılır.
+- 📊 Admin panelde tüm giriş loglarını tarih, IP ve kullanıcıya göre filtreleyebilirsiniz.
 
 ## 🗂️ Proje Yapısı
 
@@ -88,6 +88,10 @@ tek_oturum_projesi/
 - Memedi Khan (Medium) - Step-by-Step to Djagno Signals
 - Corey Schafer (Youtube) - Python Djagno Tutorial
 - Sessions (Django Protect) - Djagno Documentation
+
+## 🧱 Güncellemeler
+- Logout Log’u eklendi
+- Giriş Başarısız Log’u eklendi
 
 
 > 📌 Eğer bu projeyi beğendiysen ⭐ vererek destek olabilirsin!

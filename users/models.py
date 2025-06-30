@@ -1,27 +1,58 @@
-# Django’nun model sınıflarını kullanabilmek için models modülünü içe aktar
 from django.db import models
+from django.contrib.auth.models import User
+from django.utils.timezone import now
 
-from django.contrib.auth.models import User  # Django'nun standart kullanıcı modeli
-
-
-# LoginLog adında özel bir model tanımlıyoruz
-# Bu model, her kullanıcı girişiyle ilgili log (kayıt) tutacak
+# 🔐 Giriş Logu
 class LoginLog(models.Model):
-    user = models.ForeignKey(User, on_delete=models.CASCADE)    # Hangi kullanıcı giriş yaptı
-    ip_address = models.GenericIPAddressField()                 # IP adresi (IPv4 veya IPv6)
-    user_agent = models.TextField()                             # Tarayıcı ve cihaz bilgisi
-    login_time = models.DateTimeField(auto_now_add=True)        # Giriş zamanı (otomatik)
-    is_session_kicked = models.BooleanField(default=False)      # Önceki oturum atıldı mı?
+    user = models.ForeignKey(User, on_delete=models.CASCADE)              # Giriş yapan kullanıcı
+    login_time = models.DateTimeField(auto_now_add=True)                  # Giriş zamanı
+    logout_time = models.DateTimeField(null=True, blank=True)             # Çıkış zamanı
+    ip_address = models.GenericIPAddressField(null=True, blank=True)      # IP adresi
+    user_agent = models.TextField(null=True, blank=True)                  # Tarayıcı bilgisi
+    is_session_kicked = models.BooleanField(default=False)                # Önceki oturum atıldı mı?
+    session_key = models.CharField(max_length=40, null=True, blank=True) # Oturum anahtarı
 
-    # Admin panelde nesne göründüğünde nasıl gözükeceğini belirler
-    # Örnek: "elifsude - 192.168.0.1 - 2025-06-20 13:24:00"
+    def session_duration(self):
+        if self.logout_time:
+            return self.logout_time - self.login_time
+        return None
+
     def __str__(self):
-        return f"{self.user.username} - {self.ip_address} - {self.login_time.strftime('%Y-%m-%d %H:%M:%S')}"
+        return f"{self.user.username} - {self.login_time.strftime('%Y-%m-%d %H:%M:%S')}"
 
-    # Meta → modelin ayarları burada yapılır
     class Meta:
-        # Admin panelde görünen isim
         verbose_name = "Login Log"
         verbose_name_plural = "Login Logları"
-        # Log kayıtlarını son girişe göre sıralar (en yeni en üstte)
-        # ordering = ['-login_time']
+        ordering = ['-login_time']
+
+
+# 🚪 Çıkış Logu
+class LogoutLog(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    logout_time = models.DateTimeField(auto_now_add=True)
+    ip_address = models.GenericIPAddressField(null=True, blank=True)
+    user_agent = models.TextField(null=True, blank=True)
+
+    def __str__(self):
+        return f"{self.user.username} çıkış yaptı ({self.logout_time.strftime('%Y-%m-%d %H:%M:%S')})"
+
+    class Meta:
+        verbose_name = "Logout Log"
+        verbose_name_plural = "Logout Logları"
+        ordering = ['-logout_time']
+
+
+# ❌ Başarısız Giriş Logu
+class FailedLoginLog(models.Model):
+    username = models.CharField(max_length=150)
+    ip_address = models.GenericIPAddressField(null=True, blank=True)
+    user_agent = models.TextField(null=True, blank=True)
+    timestamp = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return f"{self.username} - {self.timestamp.strftime('%Y-%m-%d %H:%M:%S')} (Başarısız Giriş)"
+
+    class Meta:
+        verbose_name = "Başarısız Giriş Logu"
+        verbose_name_plural = "Başarısız Giriş Logları"
+        ordering = ['-timestamp']
