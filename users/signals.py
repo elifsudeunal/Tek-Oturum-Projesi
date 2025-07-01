@@ -14,7 +14,7 @@ def get_client_ip(request):
         return x_forwarded_for.split(',')[0].strip()
     return request.META.get('REMOTE_ADDR')
 
-# 🔐 Başarılı Giriş Logu
+# Başarılı Giriş Logu
 @receiver(user_logged_in)
 def on_user_logged_in(sender, request, user, **kwargs):
     if not request.session.session_key:
@@ -58,7 +58,7 @@ def on_user_logged_in(sender, request, user, **kwargs):
 
     logger.info(f"👤 {user.username} giriş yaptı. IP: {ip}, UA: {user_agent}")
 
-# 🚪 Çıkış Logu
+# Çıkış Logu
 @receiver(user_logged_out)
 def log_user_logout(sender, request, user, **kwargs):
     try:
@@ -76,7 +76,7 @@ def log_user_logout(sender, request, user, **kwargs):
     except Exception as e:
         logger.error(f"Çıkış log kaydı hatası: {e}")
 
-# ❌ Başarısız Giriş Logu (EKLENDİ)
+# Başarısız Giriş Logu (EKLENDİ)
 @receiver(user_login_failed)
 def log_failed_login(sender, credentials, request, **kwargs):
     username = credentials.get('username', '<unknown>')

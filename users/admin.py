@@ -9,12 +9,12 @@ class LoginLogAdmin(admin.ModelAdmin):
 
 @admin.register(LogoutLog)
 class LogoutLogAdmin(admin.ModelAdmin):
-    list_display = ('user', 'ip_address', 'user_agent', 'logout_time')  # ✅ düzeltildi
-    list_filter = ('user', 'logout_time', 'ip_address')                # ✅ düzeltildi
+    list_display = ('user', 'ip_address', 'user_agent', 'logout_time')
+    list_filter = ('user', 'logout_time', 'ip_address')
     search_fields = ('user__username', 'ip_address', 'user_agent')
 
 @admin.register(FailedLoginLog)
 class FailedLoginLogAdmin(admin.ModelAdmin):
-    list_display = ('username', 'ip_address', 'timestamp')  # ✅ timestamp bu modelde var
+    list_display = ('username', 'ip_address', 'timestamp')
     list_filter = ('timestamp', 'ip_address', 'username')
     search_fields = ('username',)

@@ -2,7 +2,7 @@ from django.db import models
 from django.contrib.auth.models import User
 from django.utils.timezone import now
 
-# 🔐 Giriş Logu
+# Giriş Logu
 class LoginLog(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)              # Giriş yapan kullanıcı
     login_time = models.DateTimeField(auto_now_add=True)                  # Giriş zamanı
@@ -26,7 +26,7 @@ class LoginLog(models.Model):
         ordering = ['-login_time']
 
 
-# 🚪 Çıkış Logu
+# Çıkış Logu
 class LogoutLog(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     logout_time = models.DateTimeField(auto_now_add=True)
@@ -42,7 +42,7 @@ class LogoutLog(models.Model):
         ordering = ['-logout_time']
 
 
-# ❌ Başarısız Giriş Logu
+# Başarısız Giriş Logu
 class FailedLoginLog(models.Model):
     username = models.CharField(max_length=150)
     ip_address = models.GenericIPAddressField(null=True, blank=True)
